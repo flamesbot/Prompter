@@ -1,0 +1,3 @@
+## 2024-05-24 - Tailwind CDN Anti-Pattern
+**Learning:** Using a client-side CSS compiler (like Tailwind CDN) in production is a significant anti-pattern. It forces the browser to download a large JavaScript bundle (>100kb), parse it, and then evaluate the entire DOM to generate styles on the fly before it can render correctly. This heavily delays First Contentful Paint (FCP) and Time to Interactive (TTI), and causes "flash of unstyled content" (FOUC) or blocked rendering.
+**Action:** For simple, single-file HTML applications where a build step isn't feasible, extract used utility classes to custom vanilla CSS. Never use the Tailwind CDN script in production environments.

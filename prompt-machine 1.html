@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a1a4a">
+<title>Prompt Machine</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body{
+    background:#6699FF;
+    font-family:"Trebuchet MS",Verdana,system-ui,sans-serif;
+    color:#111;
+    -webkit-text-size-adjust:100%;
+  }
+  .panel{ background:#e8e8e8; border:2px solid #fff; border-right-color:#8a8a8a; border-bottom-color:#8a8a8a; }
+  .inset{ background:#fff; border:2px solid #8a8a8a; border-right-color:#fff; border-bottom-color:#fff; }
+  .btn{
+    background:#dcdcdc; border:2px solid #fff;
+    border-right-color:#8a8a8a; border-bottom-color:#8a8a8a;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{ border-color:#8a8a8a; border-right-color:#fff; border-bottom-color:#fff; }
+  .titlebar{ background:#0096D6; color:#fff; font-family:Verdana,sans-serif; }
+
+  /* the prompt card is now tappable */
+  #card{ cursor:pointer; -webkit-tap-highlight-color:transparent; user-select:none; transition:background-color .15s; }
+  #card:active{ background:#f2f2f2; }
+  #card.copied{ background:#e6f4e6; }
+
+  /* small "Copied" flag that fades in and out */
+  #toast{ opacity:0; transition:opacity .2s; }
+  #toast.show{ opacity:1; }
+</style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-6">
+
+<main class="panel w-full max-w-lg rounded-sm overflow-hidden">
+
+  <div class="titlebar px-3 py-2 text-xs sm:text-sm font-bold tracking-wide">
+    Prompt Machine
+  </div>
+
+  <div class="p-4 sm:p-6">
+
+    <!-- tap the card to copy -->
+    <div id="card" class="inset relative p-5 sm:p-8 mb-2 min-h-[150px] flex items-center justify-center text-center"
+         role="button" tabindex="0" aria-label="Tap to copy this prompt">
+      <p id="prompt" class="text-lg sm:text-xl leading-relaxed">Loading&hellip;</p>
+      <span id="toast" class="absolute top-2 right-2 text-[11px] font-bold text-green-800">Copied</span>
+    </div>
+
+    <p class="text-[11px] text-center text-gray-600 mb-4">Tap the prompt to copy it</p>
+
+    <button id="newBtn" class="btn w-full py-5 text-lg font-bold">
+      New prompt
+    </button>
+
+    <p class="text-[11px] text-center text-gray-600 mt-5">
+      Visitor <span id="counter" class="font-mono">0000000</span> &bull; © ULG &bull; est. 1996
+    </p>
+
+  </div>
+</main>
+
+<script>
+/* =========================================================
+   EDIT YOUR PROMPTS HERE
+   ========================================================= */
+const PROMPTS = [
+  "Describe a place you've only ever seen in a dream.",
+  "What was the last thing that made you laugh out loud?",
+  "What advice would you give yourself five years ago?",
+  "Describe your day using only sounds.",
+  "The best meal you've ever eaten, and who you were with.",
+  "What does 'home' smell like?",
+  "Describe a small win from this week.",
+  "If your week were a weather forecast, what would it be?",
+  "What's a conversation you wish you'd handled differently?",
+  "Invent a public holiday. What are the traditions?",
+  "What's a song that always makes you cry, and why?",
+  "Describe a moment when you felt truly at peace.",
+  "What is a surprising thing on your bucket list?",
+  "What's your favorite room in your house?",
+  "What's your favorite way to eat potatoes?",
+  "What food are you most 'medium' about? (don't love it, don't hate it)",
+  "Which team member would try to negotiate with a possum on your behalf instead of running away?",
+  "What is a small victory that made you feel unreasonably powerful this week?",
+  "What would your personal theme song or walk-on song be?",
+  "Concert or museum?",
+  "What is a movie you will always stop and watch, no matter how many times you have seen it?",
+  "City holidays or nature holidays?",
+  "Ice cream in a cone or in a cup?",
+  "How large does a worm on the sidewalk have to be before you feel obligated to tell someone else about it?",
+  "What’s your most irrational fear?",
+  "If you had to live in a different country for a year, which one would you choose?",
+  "If you had to teach a class or give a TED Talk, what would it be about?",
+  "If you could master any skill immediately, what would it be?",
+  "What’s your favorite family tradition?",
+  "What’s the biggest misconception people have about you?",
+  "If you could have any fictional character as a best friend, who would it be?",
+  "If you won the lottery but didn’t tell anyone, how would your friends and family know?",
+  "What’s a superstitious belief that you believed as a child (or still believe)?",
+  "Who in your life (or on your team!) would you trust to take care of you if you were an egg?",
+  "Would you rather always have to hop on one foot or always have to walk backward?",
+  "What's your favourite icebreaker question?",
+  "What’s your go-to music or background noise while working?",
+  "What’s your favorite or most-used emoji?",
+  "If you could work remotely from anywhere in the world, where would you choose?",
+  "If you could automate one part of your job, what would it be?",
+  "What’s the best career advice you’ve ever received?",
+  "If you could switch roles with anyone at your company, who would it be?",
+  "Would you rather have a personal theme song that plays whenever you enter a room or have a personal mascot that follows you around?",
+];
+
+const el    = document.getElementById('prompt');
+const card  = document.getElementById('card');
+const toast = document.getElementById('toast');
+let last = -1;
+
+function newPrompt(){
+  if (!PROMPTS.length) return;
+  let i;
+  do { i = Math.floor(Math.random() * PROMPTS.length); }
+  while (PROMPTS.length > 1 && i === last);
+  last = i;
+  el.textContent = PROMPTS[i];
+  el.animate([{opacity:0},{opacity:1}], {duration:180, easing:'ease-out'});
+}
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  card.classList.add('copied');
+  clearTimeout(showToast.t);
+  showToast.t = setTimeout(() => {
+    toast.classList.remove('show');
+    card.classList.remove('copied');
+  }, 1100);
+}
+
+function copyPrompt(){
+  const text = el.textContent;
+  if (navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('Copied'))
+      .catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+// works when opened straight from the file system (no https)
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); showToast('Copied'); }
+  catch(e){ showToast('Copy failed'); }
+  document.body.removeChild(ta);
+}
+
+card.addEventListener('click', copyPrompt);
+card.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); copyPrompt(); }
+});
+
+document.getElementById('newBtn').addEventListener('click', newPrompt);
+
+newPrompt();
+
+const n = Number(localStorage.getItem('pm_hits') || 13376) + 1;
+localStorage.setItem('pm_hits', n);
+document.getElementById('counter').textContent = String(n).padStart(7, '0');
+</script>
+</body>
+</html>

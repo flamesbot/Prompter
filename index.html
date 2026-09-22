@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1a1a4a">
 <title>Prompt Machine</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   body{
     background:#B3E8CC;
@@ -31,33 +30,52 @@
   /* small "Copied" flag that fades in and out */
   #toast{ opacity:0; transition:opacity .2s; }
   #toast.show{ opacity:1; }
+
+  /* Tailwind replacements for performance (removing 100kb+ client-side compiler) */
+  body { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0.75rem; }
+  @media (min-width: 640px) { body { padding: 1.5rem; } }
+  .panel { width: 100%; max-width: 32rem; border-radius: 0.125rem; overflow: hidden; }
+  .titlebar { padding: 0.5rem 0.75rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.025em; }
+  @media (min-width: 640px) { .titlebar { font-size: 0.875rem; } }
+  .content-area { padding: 1rem; }
+  @media (min-width: 640px) { .content-area { padding: 1.5rem; } }
+  #card { position: relative; padding: 1.25rem; margin-bottom: 0.5rem; min-height: 150px; display: flex; align-items: center; justify-content: center; text-align: center; }
+  @media (min-width: 640px) { #card { padding: 2rem; } }
+  #prompt { font-size: 1.125rem; line-height: 1.625; }
+  @media (min-width: 640px) { #prompt { font-size: 1.25rem; } }
+  #toast { position: absolute; top: 0.5rem; right: 0.5rem; font-size: 11px; font-weight: 700; color: #166534; }
+  .hint-text { font-size: 11px; text-align: center; color: #4b5563; }
+  .hint-text.mb { margin-bottom: 1rem; }
+  .hint-text.mt { margin-top: 1.25rem; }
+  #newBtn { width: 100%; padding: 1.25rem 0; font-size: 1.125rem; font-weight: 700; }
+  #counter { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-3 sm:p-6">
+<body>
 
-<main class="panel w-full max-w-lg rounded-sm overflow-hidden">
+<main class="panel">
 
-  <div class="titlebar px-3 py-2 text-xs sm:text-sm font-bold tracking-wide">
+  <div class="titlebar">
     Prompt Machine
   </div>
 
-  <div class="p-4 sm:p-6">
+  <div class="content-area">
 
     <!-- tap the card to copy -->
-    <div id="card" class="inset relative p-5 sm:p-8 mb-2 min-h-[150px] flex items-center justify-center text-center"
+    <div id="card" class="inset"
          role="button" tabindex="0" aria-label="Tap to copy this prompt">
-      <p id="prompt" class="text-lg sm:text-xl leading-relaxed">Loading&hellip;</p>
-      <span id="toast" class="absolute top-2 right-2 text-[11px] font-bold text-green-800">Copied</span>
+      <p id="prompt">Loading&hellip;</p>
+      <span id="toast">Copied</span>
     </div>
 
-    <p class="text-[11px] text-center text-gray-600 mb-4">Tap the prompt to copy it</p>
+    <p class="hint-text mb">Tap the prompt to copy it</p>
 
-    <button id="newBtn" class="btn w-full py-5 text-lg font-bold">
+    <button id="newBtn" class="btn">
       New prompt
     </button>
 
-    <p class="text-[11px] text-center text-gray-600 mt-5">
-      Visitor <span id="counter" class="font-mono">0000000</span> &bull; © ULG &bull; est. 1996
+    <p class="hint-text mt">
+      Visitor <span id="counter">0000000</span> &bull; © ULG &bull; est. 1996
     </p>
 
   </div>

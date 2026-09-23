@@ -20,11 +20,13 @@
     -webkit-tap-highlight-color:transparent;
   }
   .btn:active{ border-color:#8a8a8a; border-right-color:#fff; border-bottom-color:#fff; }
+  .btn:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
   .titlebar{ background:#00AD93; color:#fff; font-family:Verdana,sans-serif; }
 
   /* the prompt card is now tappable */
   #card{ cursor:pointer; -webkit-tap-highlight-color:transparent; user-select:none; transition:background-color .15s; }
   #card:active{ background:#f2f2f2; }
+  #card:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
   #card.copied{ background:#e6f4e6; }
 
   /* small "Copied" flag that fades in and out */
@@ -63,12 +65,12 @@
 
     <!-- tap the card to copy -->
     <div id="card" class="inset"
-         role="button" tabindex="0" aria-label="Tap to copy this prompt">
-      <p id="prompt">Loading&hellip;</p>
-      <span id="toast">Copied</span>
+         role="button" tabindex="0" aria-describedby="copy-hint">
+      <p id="prompt" aria-live="polite">Loading&hellip;</p>
+      <span id="toast" aria-live="polite">Copied</span>
     </div>
 
-    <p class="hint-text mb">Tap the prompt to copy it</p>
+    <p id="copy-hint" class="hint-text mb">Tap the prompt to copy it</p>
 
     <button id="newBtn" class="btn">
       New prompt

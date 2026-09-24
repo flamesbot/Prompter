@@ -1,0 +1,3 @@
+## 2024-05-17 - aria-label Overriding Inner Content
+**Learning:** Adding an `aria-label` to an interactive element (like `role="button"`) completely overrides its inner content for screen readers. In the Prompt Machine app, adding `aria-label="Tap to copy this prompt"` to the main card prevented screen readers from ever reading the actual prompt text inside it.
+**Action:** Use `aria-describedby` linked to external hint text instead of `aria-label` when an element contains important dynamic text that must be read by screen readers.

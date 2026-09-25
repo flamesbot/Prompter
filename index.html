@@ -18,15 +18,22 @@
     background:#dcdcdc; border:2px solid #fff;
     border-right-color:#8a8a8a; border-bottom-color:#8a8a8a;
     -webkit-tap-highlight-color:transparent;
+    cursor:pointer;
   }
   .btn:active{ border-color:#8a8a8a; border-right-color:#fff; border-bottom-color:#fff; }
   .btn:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
-  .titlebar{ background:#00AD93; color:#fff; font-family:Verdana,sans-serif; }
 
   /* the prompt card is now tappable */
   #card{ cursor:pointer; -webkit-tap-highlight-color:transparent; user-select:none; transition:background-color .15s; }
   #card:active{ background:#f2f2f2; }
   #card:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
+
+  @media (hover: hover) {
+    .btn:hover { background: #e8e8e8; }
+    #card:hover { background: #f9f9f9; }
+  }
+
+  .titlebar{ background:#00796B; color:#fff; font-family:Verdana,sans-serif; margin: 0; }
   #card.copied{ background:#e6f4e6; }
 
   /* small "Copied" flag that fades in and out */
@@ -57,9 +64,9 @@
 
 <main class="panel">
 
-  <div class="titlebar">
+  <h1 class="titlebar">
     Prompt Machine
-  </div>
+  </h1>
 
   <div class="content-area">
 

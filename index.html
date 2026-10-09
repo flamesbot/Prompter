@@ -18,13 +18,17 @@
     background:#dcdcdc; border:2px solid #fff;
     border-right-color:#8a8a8a; border-bottom-color:#8a8a8a;
     -webkit-tap-highlight-color:transparent;
+    cursor:pointer;
+    transition:background-color .15s;
   }
-  .btn:active{ border-color:#8a8a8a; border-right-color:#fff; border-bottom-color:#fff; }
+  .btn:hover{ background:#e4e4e4; }
+  .btn:active{ border-color:#8a8a8a; border-right-color:#fff; border-bottom-color:#fff; background:#dcdcdc; }
   .btn:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
   .titlebar{ background:#00AD93; color:#fff; font-family:Verdana,sans-serif; }
 
   /* the prompt card is now tappable */
   #card{ cursor:pointer; -webkit-tap-highlight-color:transparent; user-select:none; transition:background-color .15s; }
+  #card:hover:not(.copied){ background:#f9f9f9; }
   #card:active{ background:#f2f2f2; }
   #card:focus-visible{ outline: 2px solid #111; outline-offset: 2px; }
   #card.copied{ background:#e6f4e6; }
